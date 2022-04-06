@@ -1,17 +1,23 @@
 import React from 'react';
+import {FilterType} from "../App";
 
-type TasksType = {
-    id:number
-    title:string
-    isDone:boolean
+export type TasksType = {
+    id: number
+    title: string
+    isDone: boolean
 }
 
 type TodoListPropsType = {
-    title:string
-    tasks:TasksType[]
+    title: string
+    tasks: TasksType[]
+    deleteTask:(tId:number)=>void
+    filterTask:(value:FilterType)=>void
 }
 
-export const TodoList = (props:TodoListPropsType) => {
+export const TodoList = (props: TodoListPropsType) => {
+
+    const onClickTaskDeleteButtonHandler = (tId:number) => {props.deleteTask(tId)}
+
     return (
         <div>
             <h3>{props.title}</h3>
@@ -20,15 +26,16 @@ export const TodoList = (props:TodoListPropsType) => {
                 <button>+</button>
             </div>
             <ul>
-                <li><input type="checkbox" checked={props.tasks[0].isDone}/> <span>{props.tasks[0].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[1].isDone}/> <span>{props.tasks[1].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[2].isDone}/> <span>{props.tasks[2].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[3].isDone}/> <span>{props.tasks[3].title}</span></li>
+                {props.tasks.map(task => <li key={task.id}>
+                    <button onClick={()=>onClickTaskDeleteButtonHandler(task.id)}>X</button>
+                    <input type="checkbox" checked={task.isDone}/>
+                    <span>{task.title}</span>
+                </li>)}
             </ul>
             <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <button onClick={()=>props.filterTask('All')}>All</button>
+                <button onClick={()=>props.filterTask('Active')}>Active</button>
+                <button onClick={()=>props.filterTask('Completed')}>Completed</button>
             </div>
         </div>
     );
