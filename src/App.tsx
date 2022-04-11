@@ -21,6 +21,7 @@ function App() {
     const deleteTask = (tId: string) => setTasks(tasks.filter(task => task.id !== tId))
     const filterTask = (value: FilterType) => setFilter(value)
     const addTask = (value: string) => setTasks([{id:v1(), title:value, isDone:false}, ...tasks])
+    const changeCheckbox = (tID:string, value:boolean) => {setTasks(tasks.map(m=>m.id===tID? {...m, isDone:value}: m))}
 
     let filteredTasks = filter === 'Active' ? tasks.filter(task => !task.isDone)
         : filter === 'Completed' ? tasks.filter(task => task.isDone)
@@ -28,8 +29,14 @@ function App() {
 
     return (
         <div className="App">
-            <TodoList title={'List 1'} tasks={filteredTasks} deleteTask={deleteTask} filterTask={filterTask}
-                      addTask={addTask}/>
+            <TodoList title={'List 1'}
+                      tasks={filteredTasks}
+                      deleteTask={deleteTask}
+                      filterTask={filterTask}
+                      addTask={addTask}
+                      changeCheckbox={changeCheckbox}
+                      filter={filter}
+            />
         </div>
     );
 }
