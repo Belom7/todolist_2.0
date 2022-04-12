@@ -8,23 +8,27 @@ export type TasksType = {
 }
 
 type TodoListPropsType = {
+    todoListID: string
     title: string
     tasks: TasksType[]
-    deleteTask: (tId: string) => void
-    filterTask: (value: FilterType) => void
-    addTask: (value: string) => void
-    changeCheckbox: (tID: string, value: boolean) => void
+    deleteTask: (todoListID: string, taskID: string) => void
+    filterTask: (todoListID: string, value: FilterType) => void
+    addTask: (todoListID: string, value: string) => void
+    changeCheckbox: (todoListID: string, taskID: string, value: boolean) => void
     filter: FilterType
 }
 
 export const TodoList = (props: TodoListPropsType) => {
 
-    const onClickTaskDeleteButtonHandler = (tId: string) => {
-        props.deleteTask(tId)
+    const [valueInput, setValueInput] = useState('')
+    const [error, setError] = useState<string | null>(null)
+
+    const onClickTaskDeleteButtonHandler = (todoListID: string, taskID: string) => {
+        props.deleteTask(todoListID, taskID)
     }
     const onClickAddTaskButtonHandler = () => {
         if (valueInput.trim() !== '') {
-            props.addTask(valueInput)
+            props.addTask(props.todoListID, valueInput)
             setValueInput('')
         } else {
             setError('Вы ничего не ввели!')
@@ -40,12 +44,10 @@ export const TodoList = (props: TodoListPropsType) => {
         }
     }
 
-    const onClickCheckboxHandler = (tID: string, value: boolean) => {
-        props.changeCheckbox(tID, value)
+    const onClickCheckboxHandler = (todoListID: string, taskID: string, value: boolean) => {
+        props.changeCheckbox(todoListID, taskID, value)
     }
 
-    const [valueInput, setValueInput] = useState('')
-    const [error, setError] = useState<string | null>(null)
 
     return (
         <div>
@@ -58,21 +60,21 @@ export const TodoList = (props: TodoListPropsType) => {
             {error && <div className={'error_message'}>{error}</div>}
             <ul>
                 {props.tasks.map(task => <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                    <button onClick={() => onClickTaskDeleteButtonHandler(task.id)}>X</button>
+                    <button onClick={() => onClickTaskDeleteButtonHandler(props.todoListID, task.id)}>X</button>
                     <input type="checkbox" checked={task.isDone}
-                           onClick={() => onClickCheckboxHandler(task.id, !task.isDone)}/>
+                           onClick={() => onClickCheckboxHandler(props.todoListID, task.id, !task.isDone)}/>
                     <span>{task.title}</span>
                 </li>)}
             </ul>
             <div>
                 <button className={props.filter === 'All' ? 'active-filter' : ''}
-                        onClick={() => props.filterTask('All')}>All
+                        onClick={() => props.filterTask(props.todoListID,'All')}>All
                 </button>
                 <button className={props.filter === 'Active' ? 'active-filter' : ''}
-                        onClick={() => props.filterTask('Active')}>Active
+                        onClick={() => props.filterTask(props.todoListID,'Active')}>Active
                 </button>
                 <button className={props.filter === 'Completed' ? 'active-filter' : ''}
-                        onClick={() => props.filterTask('Completed')}>Completed
+                        onClick={() => props.filterTask(props.todoListID,'Completed')}>Completed
                 </button>
             </div>
         </div>
