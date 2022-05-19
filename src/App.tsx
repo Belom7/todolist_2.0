@@ -1,17 +1,19 @@
-import React, {useState} from 'react';
+import React, {useReducer} from 'react';
 import {TodoList} from "./components/TodoList";
 import {v1} from "uuid";
 import {AddItemForm} from "./components/AddItemForm";
 import {ButtonAppBar} from "./components/AppBar";
 import {Container, Grid, Paper} from "@mui/material";
+import {addTaskAC, addTodolistAC, changeCheckboxAC, deleteTaskAC, TaskReducer, updateTaskAC} from "./TaskReducer";
+import {addTodoListAC, deleteTodoListAC, filterTaskAC, TodoListReducer, updateTodoListAC} from "./TodoListReducer";
 
 export type FilterType = 'All' | 'Active' | 'Completed'
-type TodoListType = {
+export type TodoListType = {
     id: string
     title: string
     filter: FilterType
 }
-type TaskType = {
+export type TaskType = {
     [id: string]: { id: string, title: string, isDone: boolean }[]
 }
 
@@ -20,12 +22,12 @@ function App() {
     const todoListID1 = v1()
     const todoListID2 = v1()
 
-    const [todoLists, setTodoList] = useState<TodoListType[]>([
+    const [todoLists, setTodoListDispatch] = useReducer(TodoListReducer, [
         {id: todoListID1, title: 'ToDoList 1', filter: 'All'},
         {id: todoListID2, title: 'ToDoList 2', filter: 'All'},
     ])
 
-    const [tasks, setTasks] = useState<TaskType>({
+    const [tasks, setTaskDispatch] = useReducer(TaskReducer, {
         [todoListID1]: [
             {id: v1(), title: 'HTML', isDone: true},
             {id: v1(), title: 'CSS', isDone: true},
@@ -48,40 +50,21 @@ function App() {
     })
 
 
-    const deleteTask = (todoListID: string, taskID: string) => {
-        setTasks({...tasks, [todoListID]: tasks[todoListID].filter(task => task.id != taskID)})
-    }
-    const filterTask = (todoListID: string, value: FilterType) => {
-        setTodoList(todoLists.map(list => list.id === todoListID ? {...list, filter: value} : list))
-    }
-    const addTask = (todoListID: string, value: string) => {
-        let newTask = {id: v1(), title: value, isDone: false}
-        setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
-    }
-    const changeCheckbox = (todoListID: string, taskID: string, value: boolean) => {
-        setTasks({
-            ...tasks,
-            [todoListID]: tasks[todoListID].map(task => task.id === taskID ? {...task, isDone: value} : task)
-        })
-    }
-    const deleteTodoList = (todoListID: string) => {
-        setTodoList(todoLists.filter(todoList => todoList.id !== todoListID))
-    }
+    const deleteTask = (todoListID: string, taskID: string) => setTaskDispatch(deleteTaskAC(todoListID, taskID))
+    const addTask = (todoListID: string, value: string) => setTaskDispatch(addTaskAC(todoListID, value))
+    const changeCheckbox = (todoListID: string, taskID: string, value: boolean) => setTaskDispatch(changeCheckboxAC(todoListID, taskID, value))
+    const updateTask = (todoListID: string, taskID: string, value: string) => setTaskDispatch(updateTaskAC(todoListID,taskID,value))
+
+    const deleteTodoList = (todoListID: string) => setTodoListDispatch(deleteTodoListAC(todoListID))
     const addTodoList = (value: string) => {
         const newTodoListID = v1()
         let newTodoList: TodoListType = {id: newTodoListID, title: value, filter: 'All'}
-        setTodoList([newTodoList, ...todoLists])
-        setTasks({[newTodoListID]: [], ...tasks})
+        setTodoListDispatch(addTodoListAC(value, newTodoList))
+        setTaskDispatch(addTodolistAC(newTodoListID))
     }
-    const updateTask = (todoListID: string, taskID: string, value: string) => {
-        setTasks({
-            ...tasks,
-            [todoListID]: tasks[todoListID].map(task => task.id === taskID ? {...task, title: value} : task)
-        })
-    }
-    const updateTodoList = (todoListID: string, value: string) => {
-        setTodoList(todoLists.map(todoList => todoList.id === todoListID ? {...todoList, title: value} : todoList))
-    }
+    const updateTodoList = (todoListID: string, value: string) => setTodoListDispatch(updateTodoListAC(todoListID,value))
+    const filterTask = (todoListID: string, value: FilterType) => setTodoListDispatch(filterTaskAC(todoListID, value))
+
 
     return (
         <div className="App">
