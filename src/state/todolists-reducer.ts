@@ -1,11 +1,11 @@
-import {FilterType, TodoListType} from "./App";
+import {FilterType, TodoListType} from "../App";
 
 const DELETE_TODOLIST = 'DELETE-TODOLIST'
 const ADD_TODOLIST = 'ADD-TODOLIST'
 const UPDATE_TODOLIST = 'UPDATE-TODOLIST'
 const FILTER_TASK = 'FILTER-TASK'
 
-export const TodoListReducer = (state: TodoListType[], action: GeneralType) => {
+export const TodolistsReducer = (state: TodoListType[], action: GeneralType) => {
     switch (action.type) {
         case DELETE_TODOLIST: {
             return state.filter(todoList => todoList.id !== action.payload.todoListID)

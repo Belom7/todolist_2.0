@@ -1,4 +1,4 @@
-import {TaskType} from "./App";
+import {TaskType} from "../App";
 import {v1} from "uuid";
 
 const DELETE_TASK = 'DELETE-TASK'

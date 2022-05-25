@@ -2,8 +2,9 @@ import React from 'react';
 import {FilterType} from "../App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {UniversalCheckBox} from "./UniversalCheckBox";
 
 export type TasksType = {
     id: string
@@ -60,10 +61,8 @@ export const TodoList = (props: TodoListPropsType) => {
                     <IconButton onClick={() => onClickTaskDeleteButtonHandler(props.todoListID, task.id)}>
                         <Delete color={'primary'}/>
                     </IconButton>
-                    <Checkbox checked={task.isDone}
-                              onClick={() => onClickCheckboxHandler(props.todoListID, task.id, !task.isDone)}
-                              color={'primary'}
-                    />
+                    <UniversalCheckBox isDone={task.isDone}
+                                       callBack={(value) => onClickCheckboxHandler(props.todoListID, task.id, value)}/>
                     <EditableSpan title={task.title}
                                   editableCallBack={(value) => editableTaskCallBackHandler(task.id, value)}/>
                 </li>)}

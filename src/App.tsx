@@ -4,8 +4,8 @@ import {v1} from "uuid";
 import {AddItemForm} from "./components/AddItemForm";
 import {ButtonAppBar} from "./components/AppBar";
 import {Container, Grid, Paper} from "@mui/material";
-import {addTaskAC, addTodolistAC, changeCheckboxAC, deleteTaskAC, TaskReducer, updateTaskAC} from "./TaskReducer";
-import {addTodoListAC, deleteTodoListAC, filterTaskAC, TodoListReducer, updateTodoListAC} from "./TodoListReducer";
+import {addTaskAC, addTodolistAC, changeCheckboxAC, deleteTaskAC, TaskReducer, updateTaskAC} from "./state/TaskReducer";
+import {addTodoListAC, deleteTodoListAC, filterTaskAC, TodolistsReducer, updateTodoListAC} from "./state/todolists-reducer";
 
 export type FilterType = 'All' | 'Active' | 'Completed'
 export type TodoListType = {
@@ -22,7 +22,7 @@ function App() {
     const todoListID1 = v1()
     const todoListID2 = v1()
 
-    const [todoLists, setTodoListDispatch] = useReducer(TodoListReducer, [
+    const [todoLists, setTodoListDispatch] = useReducer(TodolistsReducer, [
         {id: todoListID1, title: 'ToDoList 1', filter: 'All'},
         {id: todoListID2, title: 'ToDoList 2', filter: 'All'},
     ])
