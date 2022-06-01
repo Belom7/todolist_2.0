@@ -1,17 +1,20 @@
 import {FilterType, TodoListType} from "../App";
+import {v1} from "uuid";
 
 const DELETE_TODOLIST = 'DELETE-TODOLIST'
 const ADD_TODOLIST = 'ADD-TODOLIST'
 const UPDATE_TODOLIST = 'UPDATE-TODOLIST'
 const FILTER_TASK = 'FILTER-TASK'
 
-export const TodolistsReducer = (state: TodoListType[], action: GeneralType) => {
+let initialState:TodoListType[] = []
+
+export const TodoListsReducer = (state= initialState, action: GeneralType):TodoListType[] => {
     switch (action.type) {
         case DELETE_TODOLIST: {
             return state.filter(todoList => todoList.id !== action.payload.todoListID)
         }
         case ADD_TODOLIST: {
-            return [action.payload.newTodoList, ...state]
+            return [{id:action.payload.todolistId, title:action.payload.value, filter:'All'}, ...state]
         }
         case UPDATE_TODOLIST: {
             return state.map(todoList => todoList.id === action.payload.todoListID ? {
@@ -36,10 +39,10 @@ type GeneralType = deleteTodoListACType
     | filterTaskACType
 
 
-type deleteTodoListACType = ReturnType<typeof deleteTodoListAC>
-type addTodoListACType = ReturnType<typeof addTodoListAC>
-type updateTodoListACType = ReturnType<typeof updateTodoListAC>
-type filterTaskACType = ReturnType<typeof filterTaskAC>
+export type deleteTodoListACType = ReturnType<typeof deleteTodoListAC>
+export type addTodoListACType = ReturnType<typeof addTodoListAC>
+export type updateTodoListACType = ReturnType<typeof updateTodoListAC>
+export type filterTaskACType = ReturnType<typeof filterTaskAC>
 
 export const deleteTodoListAC = (todoListID: string) => {
     return {
@@ -49,12 +52,13 @@ export const deleteTodoListAC = (todoListID: string) => {
         }
     } as const
 }
-export const addTodoListAC = (value: string, newTodoList: TodoListType) => {
+export const addTodoListAC = (value: string) => {
+
     return {
         type: ADD_TODOLIST,
         payload: {
             value,
-            newTodoList
+            todolistId: v1()
         }
     } as const
 }

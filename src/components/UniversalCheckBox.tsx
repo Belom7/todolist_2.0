@@ -3,7 +3,7 @@ import {Checkbox} from "@material-ui/core";
 
 type UniversalCheckBoxPropsType = {
     isDone: boolean
-    callBack: (value:boolean) => void
+    callBack: (value: boolean) => void
 }
 
 export const UniversalCheckBox = (props: UniversalCheckBoxPropsType) => {

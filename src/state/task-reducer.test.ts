@@ -1,8 +1,10 @@
 import {TaskType} from '../App';
 import {addTaskAC, changeCheckboxAC, deleteTaskAC, TaskReducer, updateTaskAC} from "./TaskReducer";
 
-test('correct task should be deleted from correct array', () => {
-    const startState: TaskType = {
+let startState: TaskType
+
+beforeEach(()=>{
+    startState = {
         "todolistId1": [
             { id: "1", title: "CSS", isDone: false },
             { id: "2", title: "JS", isDone: true },
@@ -14,6 +16,10 @@ test('correct task should be deleted from correct array', () => {
             { id: "3", title: "tea", isDone: false }
         ]
     };
+})
+
+test('correct task should be deleted from correct array', () => {
+
 
     const action = deleteTaskAC("todolistId2", "2");
 
@@ -33,18 +39,6 @@ test('correct task should be deleted from correct array', () => {
 
 });
 test('correct task should be added to correct array', () => {
-    const startState: TaskType = {
-        "todolistId1": [
-            { id: "1", title: "CSS", isDone: false },
-            { id: "2", title: "JS", isDone: true },
-            { id: "3", title: "React", isDone: false }
-        ],
-        "todolistId2": [
-            { id: "1", title: "bread", isDone: false },
-            { id: "2", title: "milk", isDone: true },
-            { id: "3", title: "tea", isDone: false }
-        ]
-    };
 
     const action = addTaskAC("todolistId2", "juce");
 
@@ -57,18 +51,6 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"][0].isDone).toBe(false);
 });
 test('status of specified task should be changed', () => {
-    const startState: TaskType = {
-        "todolistId1": [
-            { id: "1", title: "CSS", isDone: false },
-            { id: "2", title: "JS", isDone: true },
-            { id: "3", title: "React", isDone: false }
-        ],
-        "todolistId2": [
-            { id: "1", title: "bread", isDone: false },
-            { id: "2", title: "milk", isDone: true },
-            { id: "3", title: "tea", isDone: false }
-        ]
-    };
 
     const action = changeCheckboxAC("todolistId2","2", false, );
 
@@ -78,18 +60,6 @@ test('status of specified task should be changed', () => {
     expect(endState['todolistId1'][1].isDone).toBe(true);
 });
 test('update task', () => {
-    const startState: TaskType = {
-        "todolistId1": [
-            { id: "1", title: "CSS", isDone: false },
-            { id: "2", title: "JS", isDone: true },
-            { id: "3", title: "React", isDone: false }
-        ],
-        "todolistId2": [
-            { id: "1", title: "bread", isDone: false },
-            { id: "2", title: "milk", isDone: true },
-            { id: "3", title: "tea", isDone: false }
-        ]
-    };
 
     const action = updateTaskAC("todolistId2", "2", 'Kreker');
 
