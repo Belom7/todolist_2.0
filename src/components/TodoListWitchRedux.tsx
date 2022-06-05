@@ -22,15 +22,15 @@ type PropsType = {
 
 export const TodoListWitchRedux = ({todoList}: PropsType) => {
 
-    const tasks = useSelector<AppRootStateType, TasksType[]>(state => state.tasks[todoList.id])
+    let tasks = useSelector<AppRootStateType, TasksType[]>(state => state.tasks[todoList.id])
     const dispatch = useDispatch()
 
-    let filteredTasks = tasks
+
     if (todoList.filter === 'Active') {
-        filteredTasks = tasks.filter(task => !task.isDone)
+        tasks = tasks.filter(task => !task.isDone)
     }
     if (todoList.filter === 'Completed') {
-        filteredTasks = tasks.filter(task => task.isDone)
+        tasks = tasks.filter(task => task.isDone)
     }
 
 
@@ -52,7 +52,7 @@ export const TodoListWitchRedux = ({todoList}: PropsType) => {
             </h3>
             <AddItemForm callBack={callBackHandler}/>
             <ul>
-                {filteredTasks.map(task => {
+                {tasks.map(task => {
 
                     const onClickTaskDeleteButtonHandler = () => dispatch(deleteTaskAC(todoList.id, task.id))
                     const onClickCheckboxHandler = (value: boolean) => dispatch(changeCheckboxAC(todoList.id, task.id, value))
