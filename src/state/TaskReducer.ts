@@ -1,19 +1,18 @@
-import {TaskType} from "../App";
+import {TaskType} from "../AppWithReducer";
 import {v1} from "uuid";
-import {addTodoListACType} from "./todolists-reducer";
+import {ADD_TODOLIST, addTodoListACType, DELETE_TODOLIST, deleteTodoListACType} from "./todolists-reducer";
 
 const DELETE_TASK = 'DELETE-TASK'
 const ADD_TASK = 'ADD-TASK'
 const CHANGE_CHECKBOX = 'CHANGE-CHECKBOX'
 const UPDATE_TASK = 'UPDATE-TASK'
-const ADD_TODOLIST = 'ADD-TODOLIST'
 
 export const TaskReducer = (state: TaskType = {}, action: GeneralType) => {
     switch (action.type) {
         case DELETE_TASK: {
             return {
                 ...state,
-                [action.payload.todoListID]: state[action.payload.todoListID].filter(task => task.id != action.payload.taskID)
+                [action.payload.todoListID]: state[action.payload.todoListID].filter(task => task.id !== action.payload.taskID)
             }
         }
         case ADD_TASK : {
@@ -41,12 +40,15 @@ export const TaskReducer = (state: TaskType = {}, action: GeneralType) => {
         case ADD_TODOLIST: {
             return {[action.payload.todolistId]: [], ...state}
         }
+        case DELETE_TODOLIST: {
+            let copyState = {...state}
+            delete copyState[action.payload.todoListID]
+            return copyState
+        }
         default :
             return state
     }
 }
-
-
 
 
 type GeneralType = deleteTaskACType
@@ -54,6 +56,7 @@ type GeneralType = deleteTaskACType
     | changeCheckboxACType
     | updateTaskACType
     | addTodoListACType
+    | deleteTodoListACType
 
 type deleteTaskACType = ReturnType<typeof deleteTaskAC>
 type addTaskACType = ReturnType<typeof addTaskAC>

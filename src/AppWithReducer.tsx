@@ -46,18 +46,19 @@ function AppWithReducer() {
             {id: v1(), title: 'MSQL2', isDone: false},
             {id: v1(), title: 'MOB-X2', isDone: false},
         ]
-
     })
-
 
     const deleteTask = (todoListID: string, taskID: string) => setTaskDispatch(deleteTaskAC(todoListID, taskID))
     const addTask = (todoListID: string, value: string) => setTaskDispatch(addTaskAC(todoListID, value))
     const changeCheckbox = (todoListID: string, taskID: string, value: boolean) => setTaskDispatch(changeCheckboxAC(todoListID, taskID, value))
     const updateTask = (todoListID: string, taskID: string, value: string) => setTaskDispatch(updateTaskAC(todoListID,taskID,value))
 
-    const deleteTodoList = (todoListID: string) => setTodoListDispatch(deleteTodoListAC(todoListID))
+    const deleteTodoList = (todoListID: string) => {
+        let action = deleteTodoListAC(todoListID)
+        setTodoListDispatch(action)
+        setTaskDispatch(action)
+    }
     const addTodoList = (value: string) => {
-
         let action = addTodoListAC(value)
         setTodoListDispatch(action)
         setTaskDispatch(action)

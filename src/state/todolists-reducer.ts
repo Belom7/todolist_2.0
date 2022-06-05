@@ -1,8 +1,8 @@
-import {FilterType, TodoListType} from "../App";
+import {FilterType, TodoListType} from "../AppWithReducer";
 import {v1} from "uuid";
 
-const DELETE_TODOLIST = 'DELETE-TODOLIST'
-const ADD_TODOLIST = 'ADD-TODOLIST'
+export const DELETE_TODOLIST = 'DELETE-TODOLIST'
+export const ADD_TODOLIST = 'ADD-TODOLIST'
 const UPDATE_TODOLIST = 'UPDATE-TODOLIST'
 const FILTER_TASK = 'FILTER-TASK'
 

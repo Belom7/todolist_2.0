@@ -1,4 +1,4 @@
-import {TaskType} from '../App';
+import {TaskType} from '../AppWithReducer';
 import {addTaskAC, changeCheckboxAC, deleteTaskAC, TaskReducer, updateTaskAC} from "./TaskReducer";
 
 let startState: TaskType
