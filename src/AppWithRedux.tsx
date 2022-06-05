@@ -37,10 +37,9 @@ function AppWithRedux() {
                 <Grid container spacing={3}>
                     {todoLists.map(todoList => {
                         return (
-                            <Grid item>
+                            <Grid item key={todoList.id}>
                                 <Paper style={{padding: '10px'}}>
                                     <TodoListWitchRedux
-                                        key={todoList.id}
                                         todoList={todoList}
                                     />
                                 </Paper>
