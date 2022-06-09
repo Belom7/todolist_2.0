@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -20,7 +20,8 @@ type PropsType = {
     todoList: TodoListType
 }
 
-export const TodoListWitchRedux = ({todoList}: PropsType) => {
+export const TodoListWitchRedux = React.memo(({todoList}:PropsType) => {
+    console.log('TodoListWitchRedux')
 
     let tasks = useSelector<AppRootStateType, TasksType[]>(state => state.tasks[todoList.id])
     const dispatch = useDispatch()
@@ -34,14 +35,13 @@ export const TodoListWitchRedux = ({todoList}: PropsType) => {
     }
 
 
-    const onClickTodoListDeleteButtonHandler = () => dispatch(deleteTodoListAC(todoList.id))
-    const callBackHandler = (title: string) => dispatch(addTaskAC(todoList.id, title))
-    const editableTodoListCallBackHandler = (value: string) => dispatch(updateTodoListAC(todoList.id, value))
+    const onClickTodoListDeleteButtonHandler = useCallback(() => dispatch(deleteTodoListAC(todoList.id)),[todoList.id])
+    const callBackHandler = useCallback((title: string) => dispatch(addTaskAC(todoList.id, title)), [todoList.id])
+    const editableTodoListCallBackHandler = useCallback((value: string) => dispatch(updateTodoListAC(todoList.id, value)),[todoList.id])
 
-    const onAllClickHandler = () => dispatch(filterTaskAC(todoList.id, 'All'))
-    const onActiveClickHandler = () => dispatch(filterTaskAC(todoList.id, 'Active'))
-    const onCompletedClickHandler = () => dispatch(filterTaskAC(todoList.id, 'Completed'))
-
+    const onAllClickHandler = useCallback(() => dispatch(filterTaskAC(todoList.id, 'All')),[todoList.id])
+    const onActiveClickHandler = useCallback(() => dispatch(filterTaskAC(todoList.id, 'Active')),[todoList.id])
+    const onCompletedClickHandler = useCallback(() => dispatch(filterTaskAC(todoList.id, 'Completed')),[todoList.id])
     return (
         <div>
             <h3>
@@ -85,4 +85,4 @@ export const TodoListWitchRedux = ({todoList}: PropsType) => {
             </div>
         </div>
     );
-};
+})

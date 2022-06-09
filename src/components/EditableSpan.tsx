@@ -6,7 +6,7 @@ type EditableSpanPropsType = {
     editableCallBack: (value: string) => void
 }
 
-export const EditableSpan = (props: EditableSpanPropsType) => {
+export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
     const [edit, setEdit] = useState(false)
     const [value, setValue] = useState(props.title)
     const [error, setError] = useState<string | null>(null)
@@ -27,4 +27,4 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
         edit ? <TextField value={value} onBlur={onBlurHandler} autoFocus onChange={onChangeHandler} helperText={error}/>
             : <span onDoubleClick={onDoubleClickHandler}>{props.title}</span>
     );
-};
+})
