@@ -7,6 +7,8 @@ type UniversalCheckBoxPropsType = {
 }
 
 export const UniversalCheckBox = React.memo((props: UniversalCheckBoxPropsType) => {
+
+    console.log('UniversalCheckBox render')
     return (
         <Checkbox checked={props.isDone}
                   onChange={(event) => props.callBack(event.currentTarget.checked)}
