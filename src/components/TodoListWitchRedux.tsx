@@ -53,7 +53,7 @@ export const TodoListWitchRedux = React.memo(({todoList}: PropsType) => {
             </h3>
             <AddItemForm callBack={callBackHandler}/>
             <ul>
-                {tasks.map(task => <li key={task.id}>
+                {tasks?.map(task => <li key={task.id}>
                     <Task task={task}
                           todoListId={todoList.id}
                     /></li>)}

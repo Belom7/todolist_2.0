@@ -38,7 +38,7 @@ function AppWithRedux() {
                     <AddItemForm callBack={addTodoList}/>
                 </Grid>
                 <Grid container spacing={3}>
-                    {todoLists.map(todoList => {
+                    {todoLists?.map(todoList => {
                         return (
                             <Grid item key={todoList.id}>
                                 <Paper style={{padding: '10px'}}>
